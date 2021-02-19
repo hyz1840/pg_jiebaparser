@@ -21,8 +21,43 @@
 
 ## 达成效果
 > * 每个process加载插件实例内存增加小于2M (原始jieba引擎占用150M/windows, 190M/linux)。
-> * 非首次加载速度小于100ms（I7 8700 cpu。
+> * 非首次加载速度小于100ms（I7 8700 cpu)。
+> * 分词速度比原始jieba版本有微量下降(<10%, 由于内部数据结构增加一层间接查找关联)。
 
-## 使用方法
+## 编译
+注意需要修改CMakeList.txt中boost库相关路径
+
+```shell
+mkdir build
+cd build
+
+cmake ..
+
+make
+make install 
+```
+
+## 使用
+```sql
+CREATE EXTENSION jiebaparser;
+
+--分词测试
+--MixSegment Mode
+select ts_parse('jiebaparser','小明硕士毕业于中国科学院计算所，后在日本京都大学深造.')
+--QuerySegment mode
+select ts_parse('jiebaparserqry','小明硕士毕业于中国科学院计算所，后在日本京都大学深造.')
+
+--全文检索向量生成测试
+--MixSegment mode
+select * from to_tsvector('jbtscfg','是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。')
+--QuerySegment mode
+select * from to_tsvector('jbqrytscfg','是拖拉机学院手扶拖拉机专业的。不用多久，我就会升职加薪，当上CEO，走上人生巅峰。')
+
+--重建共享内存数据结构
+select jiebaparser_reset()
+
+```
+
+
 
     
