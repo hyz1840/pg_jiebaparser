@@ -25,7 +25,7 @@ link_directories(${Boost_LIBRARY_DIR})
 
 
 
-set(SOURCE_FILES jbparser.c fenci_funs.cpp)
+set(SOURCE_FILES jbparser.c jbparserImpl.cpp)
 
 set(PG_JIEBA_POSTGRESQL_DIR "${CMAKE_INSTALL_PREFIX}"
         CACHE PATH "PostgreSQL binary directory")
